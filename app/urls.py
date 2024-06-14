@@ -1,11 +1,11 @@
 from rest_framework import routers
 from django.urls import path, include
-from .views import ProductViewSet, ProductMaterialViewSet, MaterialViewSet, P_MViewSet
+from .views import ProductViewSet, ProductMaterialViewSet, MaterialViewSet
 
 router = routers.DefaultRouter()
 
 router.register('product', ProductViewSet)
-router.register('product_material', P_MViewSet)
+# router.register('p-m', PMViewSet)
 router.register('material', MaterialViewSet)
 
 urlpatterns = [

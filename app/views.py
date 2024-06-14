@@ -1,8 +1,9 @@
 from rest_framework import viewsets, status
-from .serializers import ProductSerializer, ProductMaterialSerializer, MaterialSerializer, WarehouseSerializer, ProductQuantitySerializer
+from .serializers import ProductSerializer, ProductMaterialSerializer, MaterialSerializer, ProductQuantitySerializer
 from rest_framework.views import APIView, Response
 from .models import Product, ProductMaterial, Material, Warehouse
 from django.shortcuts import get_object_or_404
+
 
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
@@ -10,7 +11,11 @@ class ProductViewSet(viewsets.ModelViewSet):
 
 
 class ProductMaterialViewSet(APIView):
-    # serializer_class = ProductMaterialSerializer
+    def get(self, request, *args, **kwargs):
+        queryset = ProductMaterial.objects.all()
+        serializer = ProductMaterialSerializer(queryset, many=True)
+        return Response(serializer.data)
+
     def post(self, request, *args, **kwargs):
         serializer = ProductQuantitySerializer(data=request.data, many=True)
         serializer.is_valid(raise_exception=True)
@@ -65,10 +70,6 @@ class ProductMaterialViewSet(APIView):
             return Response({'result': result})
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-class P_MViewSet(viewsets.ModelViewSet):
-    queryset = ProductMaterial.objects.all()
-    serializer_class = ProductMaterialSerializer
 
 class MaterialViewSet(viewsets.ModelViewSet):
     queryset = Material.objects.all()
